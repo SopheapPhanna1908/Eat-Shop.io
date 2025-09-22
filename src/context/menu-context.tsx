@@ -45,74 +45,54 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    try {
-      const storedMenuItems = localStorage.getItem('menuItems');
-      const storedCategories = localStorage.getItem('categories');
-      const storedCategorizedMenu = localStorage.getItem('categorizedMenu');
-
-      if (storedMenuItems) {
-        setMenuItems(JSON.parse(storedMenuItems));
-      } else {
-        setMenuItems(initialMenuItems);
-      }
-
-      if (storedCategories) {
-        setCategories(JSON.parse(storedCategories));
-      } else {
-        setCategories(initialCategories);
-      }
-
-      if (storedCategorizedMenu) {
-        setCategorizedMenu(JSON.parse(storedCategorizedMenu));
-      } else {
-        // Build initial categorized menu if not in storage
-        const initialMenu: CategorizedMenu = {
-          'Apparel': initialMenuItems.filter((item) =>
-            ['T-Shirt', 'Jeans', 'Shirt'].some((keyword) =>
-              item.name.includes(keyword)
-            )
-          ),
-          'Footwear': initialMenuItems.filter((item) =>
-            ['Sneakers', 'Boots', 'Loafers'].some((keyword) =>
-              item.name.includes(keyword)
-            )
-          ),
-          'Appetizers': initialMenuItems.filter((item) =>
-            ['Calamari', 'Cheese Board', 'Crispy Rice'].some((keyword) =>
-              item.name.includes(keyword)
-            )
-          ),
-          'Beverages': initialMenuItems.filter((item) =>
-            ['Lemonade', 'Latte', 'Coffee'].some((keyword) =>
-              item.name.includes(keyword)
-            )
-          ),
-        };
-        setCategorizedMenu(initialMenu);
-      }
-    } catch (error) {
-      // If localStorage is not available or parsing fails, use initial data
-      console.error('Failed to access localStorage:', error);
-      setMenuItems(initialMenuItems);
-      setCategories(initialCategories);
+    // For static export, skip localStorage and use initial data directly
+    setMenuItems(initialMenuItems);
+    setCategories(initialCategories);
+    
+    // Build initial categorized menu from the imported data
+    const initialMenu: CategorizedMenu = {
+      'Apparel': initialMenuItems.filter((item) =>
+        ['T-Shirt', 'Jeans', 'Shirt'].some((keyword) =>
+          item.name.includes(keyword)
+        )
+      ),
+      'Footwear': initialMenuItems.filter((item) =>
+        ['Sneakers', 'Boots', 'Loafers'].some((keyword) =>
+          item.name.includes(keyword)
+        )
+      ),
+      'Appetizers': initialMenuItems.filter((item) =>
+        ['Calamari', 'Cheese Board', 'Crispy Rice'].some((keyword) =>
+          item.name.includes(keyword)
+        )
+      ),
+      'Beverages': initialMenuItems.filter((item) =>
+        ['Lemonade', 'Latte', 'Coffee'].some((keyword) =>
+          item.name.includes(keyword)
+        )
+      ),
+      'Desserts': [], // No dessert items in current data
+    };
+    
+    // Add any items that don't match categories to "Other"
+    const categorizedItemIds = new Set([
+      ...initialMenu.Apparel.map(item => item.id),
+      ...initialMenu.Footwear.map(item => item.id),
+      ...initialMenu.Appetizers.map(item => item.id),
+      ...initialMenu.Beverages.map(item => item.id),
+      ...initialMenu.Desserts.map(item => item.id),
+    ]);
+    
+    const uncategorizedItems = initialMenuItems.filter(item => !categorizedItemIds.has(item.id));
+    if (uncategorizedItems.length > 0) {
+      initialMenu['Other'] = uncategorizedItems;
     }
+    
+    setCategorizedMenu(initialMenu);
     setIsInitialized(true);
   }, []);
 
-  useEffect(() => {
-    if (isInitialized) {
-      try {
-        localStorage.setItem('menuItems', JSON.stringify(menuItems));
-        localStorage.setItem('categories', JSON.stringify(categories));
-        localStorage.setItem(
-          'categorizedMenu',
-          JSON.stringify(categorizedMenu)
-        );
-      } catch (error) {
-        console.error('Failed to save to localStorage:', error);
-      }
-    }
-  }, [menuItems, categories, categorizedMenu, isInitialized]);
+  // Remove localStorage operations for static export
 
   const getCategoryForProduct = useCallback(
     (productId: string): string | undefined => {
