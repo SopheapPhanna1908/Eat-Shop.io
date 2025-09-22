@@ -30,11 +30,7 @@ const nextConfig: NextConfig = {
       },
     ],
     domains: ['picsum.photos'],
-  },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
+    unoptimized: true, // Required for static export
   },
   webpack: (config, { isServer }) => {
     // Fix for handlebars compatibility with webpack
@@ -53,6 +49,11 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  // GitHub Pages configuration
+  output: 'export',
+  trailingSlash: true,
+  basePath: '/sopheaphannasv13.io', // Your repository name
+  assetPrefix: '/sopheaphannasv13.io/',
 };
 
 export default nextConfig;

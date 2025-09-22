@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import type { CategorizedMenu } from '@/lib/types';
 import { MenuClientLayout } from '@/components/menu-client-layout';
-import { categorizeMenuItems } from '@/ai/flows/categorize-menu-items';
 import { useMenu } from '@/context/menu-context';
 
 export default function Home() {
@@ -17,37 +16,43 @@ export default function Home() {
   const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
-    // Only run AI categorization if the menu isn't already categorized in localStorage
-    const runAICategorization = async () => {
+    // Simple client-side categorization fallback for static export
+    const runSimpleCategorization = () => {
       if (Object.keys(categorizedMenu).length > 0 && !isCategorizing) {
         return;
       }
       setIsCategorizing(true);
+
       try {
-        const categorizedFromAI = await categorizeMenuItems(
-          menuItems.map(({ name }) => ({ name, description: '' })) // Passing empty description
-        );
+        // Simple categorization logic for static export
+        const newCategorizedMenu: CategorizedMenu = {};
 
-        const findFullMenuItem = (name: string) =>
-          menuItems.find((item) => item.name === name);
+        menuItems.forEach((item) => {
+          const name = item.name.toLowerCase();
 
-        const newCategorizedMenu = Object.entries(categorizedFromAI).reduce(
-          (acc, [category, items]) => {
-            const fullItems = items
-              .map((item: { name: string }) => findFullMenuItem(item.name))
-              .filter((item): item is (typeof menuItems)[0] => !!item);
+          // Simple categorization based on keywords
+          let category = 'Other';
+          if (name.includes('burger') || name.includes('pizza') || name.includes('sandwich')) {
+            category = 'Main Courses';
+          } else if (name.includes('fries') || name.includes('wings') || name.includes('appetizer')) {
+            category = 'Appetizers';
+          } else if (name.includes('cake') || name.includes('ice cream') || name.includes('dessert')) {
+            category = 'Desserts';
+          } else if (name.includes('coffee') || name.includes('tea') || name.includes('juice') || name.includes('soda')) {
+            category = 'Beverages';
+          }
 
-            if (fullItems.length > 0) {
-              acc[category] = fullItems;
-            }
-            return acc;
-          },
-          {} as CategorizedMenu
-        );
+          if (!newCategorizedMenu[category]) {
+            newCategorizedMenu[category] = [];
+          }
+          newCategorizedMenu[category].push(item);
+        });
+
         setCategorizedMenu(newCategorizedMenu);
       } catch (error) {
-        console.error('Error categorizing menu items with AI:', error);
-        // Fallback to default categorization on error is handled in context
+        console.error('Error categorizing menu items:', error);
+        // Fallback: put all items in "All Items" category
+        setCategorizedMenu({ 'All Items': menuItems });
       } finally {
         setIsCategorizing(false);
         setInitialLoad(false);
@@ -55,7 +60,7 @@ export default function Home() {
     };
 
     if (initialLoad && menuItems.length > 0) {
-      runAICategorization();
+      runSimpleCategorization();
     }
   }, [
     initialLoad,
