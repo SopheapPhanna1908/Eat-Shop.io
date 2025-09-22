@@ -1,0 +1,76 @@
+{
+  "placeholderImages": [
+    {
+      "id": "a1",
+      "description": "A classic crewneck t-shirt.",
+      "imageUrl": "https://picsum.photos/seed/a1/600/400",
+      "imageHint": "t-shirt"
+    },
+    {
+      "id": "a2",
+      "description": "Urban explorer sneakers.",
+      "imageUrl": "https://picsum.photos/seed/a2/600/400",
+      "imageHint": "sneakers"
+    },
+    {
+      "id": "a3",
+      "description": "Crispy calamari appetizer.",
+      "imageUrl": "https://picsum.photos/seed/a3/600/400",
+      "imageHint": "fried food"
+    },
+    {
+      "id": "a4",
+      "description": "Sparkling berry lemonade.",
+      "imageUrl": "https://picsum.photos/seed/a4/600/400",
+      "imageHint": "cold drink"
+    },
+    {
+      "id": "a5",
+      "description": "Slim-fit denim jeans.",
+      "imageUrl": "https://picsum.photos/seed/a5/600/400",
+      "imageHint": "jeans"
+    },
+    {
+      "id": "a6",
+      "description": "Leather ankle boots.",
+      "imageUrl": "https://picsum.photos/seed/a6/600/400",
+      "imageHint": "boots"
+    },
+    {
+      "id": "a7",
+      "description": "Artisan cheese board.",
+      "imageUrl": "https://picsum.photos/seed/a7/600/400",
+      "imageHint": "cheese platter"
+    },
+    {
+      "id": "a8",
+      "description": "Iced matcha latte.",
+      "imageUrl": "https://picsum.photos/seed/a8/600/400",
+      "imageHint": "iced coffee"
+    },
+    {
+      "id": "a9",
+      "description": "Linen button-up shirt.",
+      "imageUrl": "https://picsum.photos/seed/a9/600/400",
+      "imageHint": "shirt"
+    },
+    {
+      "id": "a10",
+      "description": "Classic leather loafers.",
+      "imageUrl": "https://picsum.photos/seed/a10/600/400",
+      "imageHint": "dress shoes"
+    },
+    {
+      "id": "a11",
+      "description": "Spicy tuna crispy rice.",
+      "imageUrl": "https://picsum.photos/seed/a11/600/400",
+      "imageHint": "sushi"
+    },
+    {
+      "id": "a12",
+      "description": "Cold brew coffee.",
+      "imageUrl": "https://picsum.photos/seed/a12/600/400",
+      "imageHint": "coffee"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+"@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"],
+      "@ai/*": ["src/ai/*"],
+      "@context/*": ["src/context/*"]
+    },
+=======
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"],
+      "@ai/*": ["src/ai/*"],
+      "@context/*": ["src/context/*"],
+      "@/*": ["src/*"]
+    },
