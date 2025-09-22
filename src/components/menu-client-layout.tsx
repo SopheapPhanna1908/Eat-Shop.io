@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Header } from './header';
 import { MenuDisplay } from './menu-display';
 import {
@@ -27,6 +27,13 @@ export function MenuClientLayout() {
     () => Object.keys(categorizedMenu),
     [categorizedMenu]
   );
+
+  // Debug logging for development
+  useEffect(() => {
+    console.log('MenuClientLayout - categorizedMenu:', categorizedMenu);
+    console.log('MenuClientLayout - categories:', categories);
+    console.log('MenuClientLayout - isCategorizing:', isCategorizing);
+  }, [categorizedMenu, categories, isCategorizing]);
 
   const filteredMenu = useMemo(() => {
     if (!searchQuery) {

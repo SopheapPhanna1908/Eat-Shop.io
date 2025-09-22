@@ -52,8 +52,8 @@ const nextConfig: NextConfig = {
   // GitHub Pages configuration
   output: 'export',
   trailingSlash: true,
-  basePath: '/sopheaphannasv13.io', // Your repository name
-  assetPrefix: '/sopheaphannasv13.io/',
+  basePath: '/menuproject.io', // Your repository name
+  assetPrefix: '/menuproject.io/',
 };
 
 export default nextConfig;

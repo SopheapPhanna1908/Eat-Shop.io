@@ -48,32 +48,32 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     // For static export, skip localStorage and use initial data directly
     setMenuItems(initialMenuItems);
     setCategories(initialCategories);
-    
+
     // Build initial categorized menu from the imported data
     const initialMenu: CategorizedMenu = {
       'Apparel': initialMenuItems.filter((item) =>
-        ['T-Shirt', 'Jeans', 'Shirt'].some((keyword) =>
-          item.name.includes(keyword)
+        ['T-Shirt', 'Jeans', 'Shirt', 'Denim', 'Linen', 'Button-Up', 'Crewneck'].some((keyword) =>
+          item.name.toLowerCase().includes(keyword.toLowerCase())
         )
       ),
       'Footwear': initialMenuItems.filter((item) =>
-        ['Sneakers', 'Boots', 'Loafers'].some((keyword) =>
-          item.name.includes(keyword)
+        ['Sneakers', 'Boots', 'Loafers', 'Ankle Boots', 'Leather', 'Explorer'].some((keyword) =>
+          item.name.toLowerCase().includes(keyword.toLowerCase())
         )
       ),
       'Appetizers': initialMenuItems.filter((item) =>
-        ['Calamari', 'Cheese Board', 'Crispy Rice'].some((keyword) =>
-          item.name.includes(keyword)
+        ['Calamari', 'Cheese Board', 'Crispy Rice', 'Spicy Tuna', 'Artisan'].some((keyword) =>
+          item.name.toLowerCase().includes(keyword.toLowerCase())
         )
       ),
       'Beverages': initialMenuItems.filter((item) =>
-        ['Lemonade', 'Latte', 'Coffee'].some((keyword) =>
-          item.name.includes(keyword)
+        ['Lemonade', 'Latte', 'Coffee', 'Cold Brew', 'Matcha', 'Iced', 'Sparkling', 'Berry'].some((keyword) =>
+          item.name.toLowerCase().includes(keyword.toLowerCase())
         )
       ),
       'Desserts': [], // No dessert items in current data
     };
-    
+
     // Add any items that don't match categories to "Other"
     const categorizedItemIds = new Set([
       ...initialMenu.Apparel.map(item => item.id),
@@ -82,12 +82,23 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
       ...initialMenu.Beverages.map(item => item.id),
       ...initialMenu.Desserts.map(item => item.id),
     ]);
-    
+
     const uncategorizedItems = initialMenuItems.filter(item => !categorizedItemIds.has(item.id));
     if (uncategorizedItems.length > 0) {
       initialMenu['Other'] = uncategorizedItems;
     }
-    
+
+    // If no items were categorized, create a fallback categorization
+    const totalCategorizedItems = Object.values(initialMenu).flat().length;
+    if (totalCategorizedItems === 0) {
+      // Fallback: distribute items across categories
+      initialMenu.Apparel = initialMenuItems.slice(0, 3);
+      initialMenu.Footwear = initialMenuItems.slice(3, 6);
+      initialMenu.Appetizers = initialMenuItems.slice(6, 9);
+      initialMenu.Beverages = initialMenuItems.slice(9, 12);
+    }
+
+    console.log('MenuContext - Initial menu:', initialMenu);
     setCategorizedMenu(initialMenu);
     setIsInitialized(true);
   }, []);
