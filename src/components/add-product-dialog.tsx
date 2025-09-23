@@ -27,13 +27,32 @@ import { useMenu } from '@/context/menu-context';
 import type { MenuItem } from '@/lib/types';
 
 export function AddProductDialog() {
-  const { addProduct, categories, addCategory } = useMenu();
+  const { addProduct, categories, addCategory, isSaving } = useMenu();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('');
   const { toast } = useToast();
+
+  // Auto-select first category when dialog opens
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (newOpen && categories.length > 0 && !selectedCategory) {
+      setSelectedCategory(categories[0]);
+    }
+  };
+
+  // Reset form when dialog closes
+  const handleDialogClose = (newOpen: boolean) => {
+    if (!newOpen) {
+      setName('');
+      setPrice('');
+      setImage(null);
+      setSelectedCategory('');
+    }
+    setOpen(newOpen);
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,7 +65,7 @@ export function AddProductDialog() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const priceValue = parseFloat(price);
 
@@ -72,27 +91,31 @@ export function AddProductDialog() {
       featured: null,
     };
 
-    addProduct(newProduct, selectedCategory);
+    try {
+      await addProduct(newProduct, selectedCategory);
 
-    if (!categories.includes(selectedCategory)) {
-      addCategory(selectedCategory);
+      toast({
+        title: 'Product Added!',
+        description: `${name} has been successfully added.`,
+      });
+
+      // Reset form and close dialog
+      setName('');
+      setPrice('');
+      setImage(null);
+      setSelectedCategory('');
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to add product. Please try again.',
+        variant: 'destructive',
+      });
     }
-
-    toast({
-      title: 'Product Added!',
-      description: `${name} has been successfully added.`,
-    });
-
-    // Reset form and close dialog
-    setName('');
-    setPrice('');
-    setImage(null);
-    setSelectedCategory('');
-    setOpen(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" /> Add Product
@@ -176,7 +199,9 @@ export function AddProductDialog() {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save Product</Button>
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? 'Saving...' : 'Save Product'}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

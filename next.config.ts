@@ -49,11 +49,7 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  // GitHub Pages configuration
-  output: 'export',
-  trailingSlash: true,
-  basePath: '/menuproject.io', // Your repository name
-  assetPrefix: '/menuproject.io/',
+
 };
 
 export default nextConfig;

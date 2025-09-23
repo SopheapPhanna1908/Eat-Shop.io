@@ -9,13 +9,18 @@ import { useMenu } from '@/context/menu-context';
 export function AddCategoryDialog() {
   const [open, setOpen] = React.useState(false);
   const [categoryName, setCategoryName] = React.useState('');
-  const { addCategory } = useMenu();
+  const { addCategory, isSaving } = useMenu();
 
-  const onAddCategory = () => {
+  const onAddCategory = async () => {
     if (categoryName.trim() !== '') {
-      addCategory(categoryName.trim());
-      setCategoryName('');
-      setOpen(false);
+      try {
+        await addCategory(categoryName.trim());
+        setCategoryName('');
+        setOpen(false);
+      } catch (error) {
+        console.error('Failed to add category:', error);
+        // You could add a toast here for error feedback
+      }
     }
   };
 
@@ -36,8 +41,10 @@ export function AddCategoryDialog() {
           autoFocus
         />
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={onAddCategory}>Add</Button>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={isSaving}>Cancel</Button>
+          <Button onClick={onAddCategory} disabled={isSaving}>
+            {isSaving ? 'Adding...' : 'Add'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

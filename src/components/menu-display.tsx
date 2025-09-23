@@ -23,22 +23,7 @@ export function MenuDisplay({ categorizedMenu }: MenuDisplayProps) {
 
   const categories = Object.keys(categorizedMenu);
 
-  // Fallback: if no categories or empty categories, show all items
-  if (categories.length === 0 || categories.every(cat => !categorizedMenu[cat] || categorizedMenu[cat].length === 0)) {
-    return (
-      <div className="container mx-auto py-8 px-4 md:px-6">
-        <section className="mb-12 scroll-mt-20">
-          <h2 className="text-3xl font-bold font-headline mb-2 px-2 md:px-0">All Items</h2>
-          <Separator className="mb-6" />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {menuItems.map((item) => (
-              <MenuCard key={item.id} item={item} />
-            ))}
-          </div>
-        </section>
-      </div>
-    );
-  }
+
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">

@@ -21,7 +21,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     // Hardcoded credentials for demonstration
-    if (email === 'admin@example.com' && password === 'password') {
+    if (email === 'Phanna168@gmail.com' && password === 'Phanna19082345') {
       toast({
         title: 'Login Successful',
         description: 'Welcome back!',
@@ -57,7 +57,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@example.com"
+                placeholder="Phanna168@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

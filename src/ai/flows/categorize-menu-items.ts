@@ -45,14 +45,22 @@ const categorizeMenuItemsPrompt = ai.definePrompt({
   model: googleAI.model('gemini-1.5-flash-latest'),
   input: { schema: CategorizeMenuItemsInputSchema },
   output: { schema: CategorizedMenuItemsOutputSchema },
-  prompt: `You are an expert menu organizer. Given a list of menu items, categorize them into appropriate categories such as "Appetizers", "Main Courses", "Desserts", "Drinks", etc. Be creative and consider the content of the menu items.
+  prompt: `You are an expert menu organizer. Given a list of menu items, categorize them into appropriate categories. Consider both English and Khmer text, and be creative with categorization.
+
+Available categories to use (prioritize these when possible):
+- Apparel (clothing items like shirts, jeans, etc.)
+- Footwear (shoes, boots, sneakers, etc.)
+- Appetizers (appetizer foods like calamari, cheese board, etc.)
+- Beverages (drinks like lemonade, latte, coffee, etc.)
+- Desserts (sweet items)
+- Other (items that don't fit above categories)
 
 Menu Items:
 {{#each this}}
 - Name: {{name}}
 {{/each}}
 
-Return a JSON object where the keys are the categories and the values are arrays of menu items (name only) belonging to that category.
+Return a JSON object where the keys are the categories and the values are arrays of menu items (name only) belonging to that category. Use the available categories above when possible, but you can create new categories if needed.
 `,
 });
 

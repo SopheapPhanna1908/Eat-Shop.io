@@ -23,10 +23,32 @@ export function MenuClientLayout() {
   const { categorizedMenu, isCategorizing } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = useMemo(
-    () => Object.keys(categorizedMenu),
-    [categorizedMenu]
-  );
+  const filteredMenu = useMemo(() => {
+    if (!searchQuery) {
+      return categorizedMenu;
+    }
+
+    const lowercasedQuery = searchQuery.toLowerCase();
+    const allItems = Object.values(categorizedMenu).flat();
+    const matchingItems = allItems.filter(
+      (item) =>
+        item.name.toLowerCase().includes(lowercasedQuery) ||
+        item.price.toString().includes(lowercasedQuery)
+    );
+
+    if (matchingItems.length > 0) {
+      return { 'Search Results': matchingItems };
+    }
+
+    return {};
+  }, [searchQuery, categorizedMenu]);
+
+  const categories = useMemo(() => {
+    if (!searchQuery) {
+      return Object.keys(categorizedMenu);
+    }
+    return Object.keys(filteredMenu);
+  }, [filteredMenu, categorizedMenu, searchQuery]);
 
   // Debug logging for development
   useEffect(() => {
@@ -34,27 +56,6 @@ export function MenuClientLayout() {
     console.log('MenuClientLayout - categories:', categories);
     console.log('MenuClientLayout - isCategorizing:', isCategorizing);
   }, [categorizedMenu, categories, isCategorizing]);
-
-  const filteredMenu = useMemo(() => {
-    if (!searchQuery) {
-      return categorizedMenu;
-    }
-
-    const lowercasedQuery = searchQuery.toLowerCase();
-    const newFilteredMenu: CategorizedMenu = {};
-
-    for (const category in categorizedMenu) {
-      const filteredItems = categorizedMenu[category].filter(
-        (item) =>
-          item.name.toLowerCase().includes(lowercasedQuery)
-      );
-
-      if (filteredItems.length > 0) {
-        newFilteredMenu[category] = filteredItems;
-      }
-    }
-    return newFilteredMenu;
-  }, [searchQuery, categorizedMenu]);
 
   return (
     <SidebarProvider>

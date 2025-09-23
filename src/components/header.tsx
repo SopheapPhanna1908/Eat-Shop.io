@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { AppLogo } from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
