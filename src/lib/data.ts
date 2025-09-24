@@ -86,3 +86,111 @@ export const menuItems: MenuItem[] = [
     featured: null,
   },
 ];
+
+// Pre-categorized menu data for static export
+export const categories = ['Apparel', 'Footwear', 'Appetizers', 'Beverages', 'Desserts'];
+
+export const categorizedMenu: Record<string, MenuItem[]> = {
+  'Apparel': [
+    {
+      id: '1',
+      name: 'Classic Crewneck T-Shirt',
+      price: 24.99,
+      image: 'https://picsum.photos/seed/a1/600/400',
+      featured: 'new',
+    },
+    {
+      id: '5',
+      name: 'Slim-Fit Denim Jeans',
+      price: 75.0,
+      image: 'https://picsum.photos/seed/a5/600/400',
+      featured: null,
+    },
+    {
+      id: '9',
+      name: 'Linen Button-Up Shirt',
+      price: 65.0,
+      image: 'https://picsum.photos/seed/a9/600/400',
+      featured: 'new',
+    },
+  ],
+  'Footwear': [
+    {
+      id: '2',
+      name: 'Urban Explorer Sneakers',
+      price: 89.99,
+      image: 'https://picsum.photos/seed/a2/600/400',
+      featured: 'hot',
+    },
+    {
+      id: '6',
+      name: 'Leather Ankle Boots',
+      price: 120.0,
+      image: 'https://picsum.photos/seed/a6/600/400',
+      featured: 'new',
+    },
+    {
+      id: '10',
+      name: 'Classic Leather Loafers',
+      price: 110.0,
+      image: 'https://picsum.photos/seed/a10/600/400',
+      featured: null,
+    },
+  ],
+  'Appetizers': [
+    {
+      id: '3',
+      name: 'Crispy Calamari',
+      price: 12.5,
+      image: 'https://picsum.photos/seed/a3/600/400',
+      featured: 'hot',
+    },
+    {
+      id: '7',
+      name: 'Artisan Cheese Board',
+      price: 18.0,
+      image: 'https://picsum.photos/seed/a7/600/400',
+      featured: null,
+    },
+    {
+      id: '11',
+      name: 'Spicy Tuna Crispy Rice',
+      price: 14.5,
+      image: 'https://picsum.photos/seed/a11/600/400',
+      featured: 'hot',
+    },
+  ],
+  'Beverages': [
+    {
+      id: '4',
+      name: 'Sparkling Berry Lemonade',
+      price: 5.5,
+      image: 'https://picsum.photos/seed/a4/600/400',
+      featured: null,
+    },
+    {
+      id: '8',
+      name: 'Iced Matcha Latte',
+      price: 6.0,
+      image: 'https://picsum.photos/seed/a8/600/400',
+      featured: 'hot',
+    },
+    {
+      id: '12',
+      name: 'Cold Brew Coffee',
+      price: 4.75,
+      image: 'https://picsum.photos/seed/a12/600/400',
+      featured: null,
+    },
+  ],
+  'Desserts': [
+    // Add dessert items here if needed
+  ],
+};
+
+// Combined menu data for static export
+export const menuData = {
+  menuItems,
+  categories,
+  categorizedMenu,
+};

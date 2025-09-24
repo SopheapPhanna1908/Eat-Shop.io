@@ -9,7 +9,7 @@ import {
   useEffect,
 } from 'react';
 import type { MenuItem, CategorizedMenu } from '@/lib/types';
-import { menuItems as initialMenuItems } from '@/lib/data';
+import { menuItems as initialMenuItems, categories as initialCategories, categorizedMenu as initialCategorizedMenu } from '@/lib/data';
 
 type MenuContextType = {
   menuItems: MenuItem[];
@@ -30,57 +30,24 @@ type MenuContextType = {
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
-const initialCategories: string[] = ['Apparel', 'Footwear', 'Appetizers', 'Beverages', 'Desserts'];
-
+// Static data loading for GitHub Pages compatibility
 const loadData = async () => {
-  try {
-    const response = await fetch('/api/menu');
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        menuItems: data.menuItems || initialMenuItems,
-        categories: data.categories || initialCategories,
-        categorizedMenu: data.categorizedMenu || {},
-      };
-    }
-  } catch (error) {
-    console.error('Failed to load data:', error);
-  }
+  // Return static data directly
   return {
     menuItems: initialMenuItems,
     categories: initialCategories,
-    categorizedMenu: {},
+    categorizedMenu: initialCategorizedMenu,
   };
 };
 
+// Static save function for GitHub Pages compatibility
 const saveData = async (menuItems: MenuItem[], categories: string[], categorizedMenu: Record<string, MenuItem[]>, retryCount = 0) => {
-  const maxRetries = 3;
-  try {
-    const response = await fetch('/api/menu', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ menuItems, categories, categorizedMenu }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    console.log('Data saved successfully');
-  } catch (error) {
-    console.error(`Failed to save data (attempt ${retryCount + 1}):`, error);
-
-    if (retryCount < maxRetries) {
-      console.log(`Retrying save operation... (${retryCount + 1}/${maxRetries})`);
-      await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // Exponential backoff
-      return saveData(menuItems, categories, categorizedMenu, retryCount + 1);
-    } else {
-      console.error('Max retries reached. Failed to save data.');
-      throw error;
-    }
-  }
+  // In static mode, we don't save data to API
+  // This is a no-op function for compatibility
+  console.log('Static mode: Data changes are not persisted (GitHub Pages compatibility)');
+  console.log('Menu items:', menuItems.length);
+  console.log('Categories:', categories);
+  console.log('Categorized menu keys:', Object.keys(categorizedMenu));
 };
 
 const buildCategorizedMenu = (menuItems: MenuItem[], categories: string[]) => {
