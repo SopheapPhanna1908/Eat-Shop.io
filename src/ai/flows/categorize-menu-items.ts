@@ -15,20 +15,20 @@ import { googleAI } from '@genkit-ai/googleai';
 
 const MenuItemSchema = z.object({
   name: z.string().describe('The name of the menu item.'),
-  description: z.string().describe('A detailed description of the menu item.'),
+  price: z.number().describe('The price of the menu item.'),
 });
 
 export type MenuItem = z.infer<typeof MenuItemSchema>;
 
 const CategorizeMenuItemsInputSchema = z
-  .array(z.object({ name: z.string() }))
+  .array(z.object({ name: z.string(), price: z.number() }))
   .describe('An array of menu items to categorize.');
 export type CategorizeMenuItemsInput = z.infer<
   typeof CategorizeMenuItemsInputSchema
 >;
 
 const CategorizedMenuItemsOutputSchema = z
-  .record(z.string(), z.array(z.object({ name: z.string() })))
+  .record(z.string(), z.array(z.object({ name: z.string(), price: z.number() })))
   .describe('A record of menu items, with the keys being the categories.');
 export type CategorizeMenuItemsOutput = z.infer<
   typeof CategorizedMenuItemsOutputSchema
@@ -57,10 +57,10 @@ Available categories to use (prioritize these when possible):
 
 Menu Items:
 {{#each this}}
-- Name: {{name}}
+- Name: {{name}}, Price: \${{price}}
 {{/each}}
 
-Return a JSON object where the keys are the categories and the values are arrays of menu items (name only) belonging to that category. Use the available categories above when possible, but you can create new categories if needed.
+Return a JSON object where the keys are the categories and the values are arrays of menu items (name and price only) belonging to that category. Use the available categories above when possible, but you can create new categories if needed.
 `,
 });
 

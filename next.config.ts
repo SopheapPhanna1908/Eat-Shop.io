@@ -30,7 +30,6 @@ const nextConfig: NextConfig = {
       },
     ],
     domains: ['picsum.photos'],
-    unoptimized: true, // Required for static export
   },
   webpack: (config, { isServer }) => {
     // Fix for handlebars compatibility with webpack
